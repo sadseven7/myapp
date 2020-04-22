@@ -1,0 +1,39 @@
+base:
+  config:
+    nacos:
+      hostname: nacos.sad7.com
+      port: 8848
+
+spring:
+  application:
+    name: business-reg
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${base.config.nacos.hostname}:${base.config.nacos.port}
+
+dubbo:
+  scan:
+    base-packages: com.sad7.myapp.plus.business.controller
+  protocol:
+    name: dubbo
+    port: -1
+    serialization: kryo
+  registry:
+    address: nacos://${base.config.nacos.hostname}
+    port: ${base.config.nacos.port}
+
+server:
+  # ${random.int[9000,9999]} 随机端口
+  port: 9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

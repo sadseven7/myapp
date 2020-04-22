@@ -1,0 +1,42 @@
+base:
+  config:
+    mongodb:
+      hostname: mongodb.sad7.com
+      port: 27017
+    nacos:
+      hostname: nacos.sad7.com
+      port: 8848
+
+spring:
+  application:
+    name: tool-mongodb
+  main:
+    allow-bean-definition-overriding: true
+  #数据源配置
+  data:
+    mongodb:
+    # 主机地址
+#    host: ${base.config.mongodb.hostname}
+    # 数据库
+#    database: articledb
+    # 默认端口是27017
+#    port: ${base.config.mongodb.port}
+    #也可以使用uri连接
+      uri: mongodb://user:123456@${base.config.mongodb.hostname}:${base.config.mongodb.port}/articledb
+
+# Services Versions
+services:
+  versions:
+    search:
+      v1: 1.0.0
+
+dubbo:
+  scan:
+    base-packages: com.sad7.myapp.plus.tool.mongodb.service
+  protocol:
+    name: dubbo
+    port: -1
+    serialization: kryo
+  registry:
+    address: nacos://${base.config.nacos.hostname}
+    port: ${base.config.nacos.port}
